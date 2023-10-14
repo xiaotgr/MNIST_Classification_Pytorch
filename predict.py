@@ -1,25 +1,38 @@
+import os
 import torch
 import torchvision
 from torchvision import transforms
 import matplotlib.pyplot as plt
 
-import setting
 from model import Model
 
+# setting
+DATA_DIR = os.getcwd()  # 程序文件路径
+PRED_DIR = DATA_DIR + "/pred_set"  # 预测集路径
+PTH_NAME = "checkpoint_99.0723%.pth"  # 训练好的模型文件名
+PRED_IMAGE_NAME = "7.png"  # 用于预测的图像文件名
+PRED_IMAGE = f"{PRED_DIR}/{PRED_IMAGE_NAME}"  # pred_set 文件夹内的图片，用于预测图像
+PTH_FILE = f"{DATA_DIR}/{PTH_NAME}"  # 之前训练好的 pth 文件
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 CLASS_NAMES = [
-    '0 - zero', '1 - one', '2 - two', '3 - three', '4 - four',
-    '5 - five', '6 - six', '7 - seven', '8 - eight', '9 - nine'
+    "0 - zero",
+    "1 - one",
+    "2 - two",
+    "3 - three",
+    "4 - four",
+    "5 - five",
+    "6 - six",
+    "7 - seven",
+    "8 - eight",
+    "9 - nine",
 ]
-PRED_IMAGE_NAME = '7.png'    # 用于预测的图像文件名
-PRED_IMAGE = f"{setting.PRED_DIR}/{PRED_IMAGE_NAME}"  # pred_set 文件夹内的图片，用于预测图像
 
-print('----> Creating Model')
+print("----> Creating Model")
 my_model = Model().to(DEVICE)
-print('----> Done')
+print("----> Done")
 print("----> Loading Checkpoint")
-my_model.load_state_dict(torch.load(setting.PTH_FILE, map_location=DEVICE))
+my_model.load_state_dict(torch.load(PTH_FILE, map_location=DEVICE))
 print("----> Done")
 
 
@@ -55,7 +68,7 @@ def predict() -> None:
         pred_label = my_model(image.unsqueeze(dim=0).to(DEVICE))
     # print("----> Predict Label: ", pred_label)
 
-    pred_label_softmax = torch.softmax(pred_label, dim=1)     # 转换成概率
+    pred_label_softmax = torch.softmax(pred_label, dim=1)  # 转换成概率
     pred_label_idx = torch.argmax(pred_label_softmax, dim=1)  # 获取概率最大的下标
     pred_label_class = CLASS_NAMES[pred_label_idx.cpu()]  # 找出是狗还是猫
     print(f"----> Predict: === {pred_label_class} ===")
@@ -70,5 +83,5 @@ def predict() -> None:
     print("----> Done")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     predict()
