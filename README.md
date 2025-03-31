@@ -13,7 +13,7 @@
 # 如何安装？
 
 ```
-git clone https://github.com/xiaoaug/MNIST_Classification_Pytorch.git  # 下载
+git clone https://github.com/xiaotgr/MNIST_Classification_Pytorch.git  # 下载
 cd MNIST_Classification_Pytorch
 pip install -r requirements.txt  # 安装
 ```
